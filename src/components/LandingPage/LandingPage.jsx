@@ -14,7 +14,7 @@ const LandingPage = () => {
             justifyContent: 'center',
             alignItems: 'flex-start',
           }} >
-          <Typography variant="h3" align="left" sx={{ mt: 10 }}>Salut, nigga!</Typography>
+          <Typography variant="h3" align="left" sx={{ mt: 10 }}>Salut!</Typography>
           <Typography variant="h4" align="left" sx={{ mt: 0 }}>Bine ai venit pe pagina de intranet Absoluto.</Typography>
         </Box>
       </Container>

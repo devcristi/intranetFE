@@ -14,6 +14,7 @@ import Logo from '../../imgs/logobjj.png';
 import { Box, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import DashboardStats from '../DashboardStats/DashboardStats';
 
 const NAVIGATION = [
   {
@@ -39,17 +40,22 @@ const NAVIGATION = [
   },
   {
     segment: 'reports',
-    title: 'Reports',
+    title: 'Rapoarte',
     icon: <BarChartIcon />,
     children: [
       {
-        segment: 'sales',
-        title: 'Sales',
+        segment: 'sportivi',
+        title: 'Sportivi',
         icon: <DescriptionIcon />,
       },
       {
-        segment: 'traffic',
-        title: 'Traffic',
+        segment: 'centre',
+        title: 'Centre',
+        icon: <DescriptionIcon />,
+      },
+      {
+        segment: 'antrenamente',
+        title: 'Antrenamente',
         icon: <DescriptionIcon />,
       },
     ],
@@ -111,28 +117,6 @@ export default function DashboardLayoutBasic(props) {
 
   // Remove this const when copying and pasting into your project.
   const demoWindow = window ? window() : undefined;
-
-  useEffect(() => {
-    // 🔹 Fetch user info de la un API sau localStorage
-    const fetchUserInfo = async () => {
-      try {
-          const response = await axios.get('http://localhost:8080/api/users/info', {
-              withCredentials: true, // Permite cookie-uri
-              headers: {
-                  'Content-Type': 'application/json',
-                  // 'Authorization': `Bearer ${token}` // Dacă folosești JWT
-              },
-          });
-          console.log('User info:', response.data);
-          setUserInfo(response.data); // Actualizează state-ul userInfo
-      } catch (error) {
-          console.error('Error fetching user info:', error.response?.data || error.message);
-      }
-  };  
-
-    fetchUserInfo();
-  }, []);
-
   return (
     <AppProvider
       navigation={NAVIGATION}
@@ -164,23 +148,8 @@ export default function DashboardLayoutBasic(props) {
                   flexDirection: 'column',
                 }}
               >
-                <Box
-                  component={'img'}
-                  src="https://thispersondoesnotexist.com"
-                  alt="profile_pic"
-                  sx={{
-                    width: '150px',
-                    height: '150px',
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                  }}
-                ></Box>
-                <Typography variant="h4" sx={{ mt: 2 }}>Salut, 
-                  {userInfo.firstName} {userInfo.lastName}!
-                </Typography>
-                <Typography variant="h6" sx={{ mt: 0 }}>
-                  {userInfo.role}
-                </Typography>
+                <h1>Panou Admin</h1>
+                <DashboardStats />
               </Box>
             </Grid>
           </Grid>

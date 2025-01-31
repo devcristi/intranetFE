@@ -35,40 +35,44 @@ const SignUp = () => {
     // Functia pentru gestionarea inregistrarii
     const handleSignUp = async (e) => {
         e.preventDefault();
-
-        // Verifică dacă parolele se potrivesc
+    
         if (password !== confirmPassword) {
             alert("Parolele nu se potrivesc!");
             return;
         }
-
+    
         setLoading(true);
         setError('');
-
+    
         try {
-            const response = await axios.post('http://localhost:8080/api/signup', {
-                firstName,
-                lastName,
-                email,
-                password,
-            });
+            const response = await axios.post('http://localhost:8080/api/users/signup', 
+                {
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    confirmPassword
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json', // Specifică tipul conținutului
+                    },
+                }
+            );
             alert('Inregistrare reusita!');
         } catch (error) {
             if (error.response) {
-                // Server responded with a status other than 200 range
                 setError(error.response.data.message);
             } else if (error.request) {
-                // Request was made but no response received
                 setError('Network error. Please try again later.');
             } else {
-                // Something else happened
                 setError('An error occurred. Please try again.');
             }
         } finally {
             setLoading(false);
         }
     };
-
+    
     return (
         <Container maxWidth="sm">
             <Grid container spacing={2} justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>

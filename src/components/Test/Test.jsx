@@ -6,16 +6,14 @@ const Test = () => {
     const [responseMessage, setResponseMessage] = useState('');
 
     useEffect(() => {
-        // Trimite cererea către backend
-        axios.get('http://localhost:8080/api/test')
+        axios.get('http://localhost:8080/api/test') // URL-ul endpoint-ului din backend
             .then(response => {
-                setResponseMessage(response.data);  // Stochează mesajul din răspuns
+                setResponseMessage(response.data); // Stochează răspunsul în state
             })
             .catch(error => {
                 setResponseMessage('Eroare la conectare la backend');
-                console.error(error);
+                console.error('Axios error:', error);
             });
-
     }, []);
 
     return (

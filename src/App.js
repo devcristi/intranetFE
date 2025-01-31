@@ -8,6 +8,8 @@ import Navbar from './components/Navbar/Navbar'; // Correct import
 import Profile from './components/Profile/Profile';
 import DashboardLayoutNoToolpad from './components/Profile/Profile';
 import Test from './components/Test/Test';
+import AdminPannel from './components/AdminPannel/AdminPannel';
+import DashboardStats from './components/DashboardStats/DashboardStats';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/dashboard" element={<DashboardLayoutNoToolpad />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/admin" element={<AdminPannel />} />
+          <Route path="/dashboardstats" element={<DashboardStats />} />
         </Routes>
       </div>
     </Router>

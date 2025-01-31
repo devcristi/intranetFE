@@ -7,18 +7,40 @@ import logo from '../../imgs/logobjj.png';
 import { Link as RouterLink } from 'react-router-dom';
 
 const Login = () => {
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleLogin = async (e) => {
         e.preventDefault();
+    
         try {
-            const response = await axios.post('http://localhost:8080/student/login', { email, password });
-            alert(response.data);
+            const response = await axios.post(
+                'http://localhost:8080/login',
+                new URLSearchParams({
+                    email: email, // Cheia trebuie să fie "username" (nu "email"), conform standardului Spring Security
+                    password: password
+                }),
+                {
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, 
+                    withCredentials: true
+                }
+            );
+            console.log("Răspuns backend:", response.data);
+    
+            if (response.data.message === "Autentificare reusita") {
+                window.location.href = "/dashboard"; // Redirecționează la dashboard
+            }
         } catch (error) {
-            alert('Eroare la autentificare: ' + error.response.data);
+            console.error("Eroare la login:", error.response?.data || error.message);
         }
     };
+    
+    
+    
+    
+    
 
     return (
         <Container maxWidth="sm">
@@ -42,7 +64,7 @@ const Login = () => {
                                 <img
                                     src={logo}
                                     alt="Logo"
-                                    style={{ 
+                                    style={{
                                         maxWidth: '150px',
                                         height: 'auto',
                                         objectFit: 'cover'
