@@ -4,44 +4,56 @@ import { Box, Link, TextField, Button, Container, Typography, Paper, Divider, Ch
 import Grid from '@mui/material/Grid2';
 import { motion } from 'framer-motion';
 import logo from '../../imgs/logobjj.png';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../components/AuthContext/AuthContext';
+
 
 const Login = () => {
-    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const { login } = useAuthContext();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-    
+      
         try {
-            const response = await axios.post(
-                'http://localhost:8080/login',
-                new URLSearchParams({
-                    email: email, // Cheia trebuie să fie "username" (nu "email"), conform standardului Spring Security
-                    password: password
-                }),
-                {
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, 
-                    withCredentials: true
-                }
-            );
-            console.log("Răspuns backend:", response.data);
-    
-            if (response.data.message === "Autentificare reusita") {
-                window.location.href = "/dashboard"; // Redirecționează la dashboard
+          const loginResponse = await axios.post(
+            'http://localhost:8080/login',
+            new URLSearchParams({
+              email: email,
+              password: password
+            }),
+            {
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              withCredentials: true
             }
-        } catch (error) {
-            console.error("Eroare la login:", error.response?.data || error.message);
+          );
+          console.log("Răspuns login:", loginResponse.data);
+      
+          if (loginResponse.status === 200 && loginResponse.data.redirectUrl) {
+            // Efectuează un apel suplimentar pentru a obține informațiile complete ale userului
+            const userResponse = await axios.get("http://localhost:8080/api/users/info", {
+              withCredentials: true
+            });
+            console.log("User info:", userResponse.data);
+            
+            // Actualizează contextul cu datele complete ale userului
+            login(userResponse.data);
+            
+            console.log("Navigating to:", loginResponse.data.redirectUrl);
+            navigate("/admin");
+          } else {
+            setError("Autentificare eșuată!");
+          }
+        } catch (err) {
+          console.error("Eroare la login:", err.response?.data || err.message);
+          setError("Autentificare eșuată!");
         }
-    };
+      };
+      
     
-    
-    
-    
-    
-
     return (
         <Container maxWidth="sm">
             <Grid
@@ -95,14 +107,8 @@ const Login = () => {
                                 margin="normal"
                             />
                             <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        color="primary"
-                                        disabled={false}
-                                    />
-                                }
+                                control={<Checkbox color="primary" />}
                                 label="Remember me"
-                                labelPlacement="end"
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -118,7 +124,6 @@ const Login = () => {
                                     style={{
                                         marginTop: '1rem',
                                         marginBottom: '1rem',
-                                        width: 'auto',
                                     }}
                                 >
                                     Autentificare
@@ -129,7 +134,6 @@ const Login = () => {
                                     style={{
                                         marginTop: '1rem',
                                         marginBottom: '1rem',
-                                        width: 'auto',
                                     }}
                                 >
                                     <Link href="#" underline="none" color="primary">
