@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Box, Card, CardContent, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid2"; // 🔹 Compatibilitate cu Toolpad
+import React, { useState, useEffect } from "react";
+import { Box, Typography, CircularProgress, Alert } from "@mui/material";
+import Grid from "@mui/material/Grid2"; // Compatibilitate cu Toolpad
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// 🔹 Simulăm datele pentru grafice
+// Simulăm datele pentru grafice
 const mockData = [
   { name: "Lun", value: 10 },
   { name: "Mar", value: 20 },
@@ -23,7 +23,7 @@ export default function DashboardStats() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 🔹 Fetch număr utilizatori din backend
+    // Fetch număr de utilizatori
     axios
       .get("http://localhost:8080/api/users/count")
       .then((response) => {
@@ -32,15 +32,40 @@ export default function DashboardStats() {
       .catch((error) => {
         console.error("Eroare la preluarea numărului de utilizatori:", error);
       });
+
+    // Fetch număr de centre
+    axios
+      .get("http://localhost:8080/api/centres/count")
+      .then((response) => {
+        setSportCenters(response.data);
+      })
+      .catch((error) => {
+        console.error("Eroare la preluarea numărului de centre:", error);
+      });
+
+    // Fetch număr de antrenamente (aici poți adăuga apelul corespunzător)
+    // axios.get("http://localhost:8080/api/trainings/count")
+    //   .then(response => setWeeklyTrainings(response.data))
+    //   .catch(error => console.error("Eroare la preluarea antrenamentelor:", error));
   }, []);
 
   return (
-    <Box sx={{ flexGrow: 1, px: 2, py: 4 }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        display: "flex", // adăugăm display flex
+        flexDirection: "column", // afișăm pe verticală
+        alignItems: "center", // centrează pe orizontală
+        justifyContent: "center", // centrează pe verticală
+        px: 2,
+        py: 4,
+      }}
+    >
       <h1>Panou de administrare</h1>
       <Grid container spacing={4} justifyContent="center" alignItems="center">
         {/* 🔹 Card - Total Utilizatori */}
         <Grid item xs={12} md={10} lg={8}>
-          <Card
+          <Box
             sx={{
               width: "100%",
               height: 220,
@@ -50,16 +75,24 @@ export default function DashboardStats() {
               px: 4,
               cursor: "pointer",
               "&:hover": { backgroundColor: "#f5f5f5" },
+              boxShadow: 1,
             }}
-            elevation={1}
             onClick={() => navigate("/admin/sportivi")}
           >
-            <CardContent sx={{ width: "100%" }}>
+            <Box sx={{ width: "100%" }}>
               <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold" }}>
                 Total Sportivi
               </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <Typography variant="h2" sx={{ fontWeight: "bold" }}>{totalUsers}</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="h2" sx={{ fontWeight: "bold" }}>
+                  {totalUsers}
+                </Typography>
                 <ResponsiveContainer width="55%" height={120}>
                   <LineChart data={mockData}>
                     <XAxis dataKey="name" hide />
@@ -69,13 +102,13 @@ export default function DashboardStats() {
                   </LineChart>
                 </ResponsiveContainer>
               </Box>
-            </CardContent>
-          </Card>
+            </Box>
+          </Box>
         </Grid>
 
-        {/* 🔹 Card - Centre Sportive (Mock) */}
+        {/* 🔹 Card - Centre Absoluto */}
         <Grid item xs={12} md={10} lg={8}>
-          <Card
+          <Box
             sx={{
               width: "100%",
               height: 220,
@@ -84,16 +117,25 @@ export default function DashboardStats() {
               alignItems: "center",
               px: 4,
               cursor: "pointer",
+              boxShadow: 1,
+              "&:hover": { backgroundColor: "#f5f5f5" },
             }}
-            elevation={1}
             onClick={() => navigate("/admin/centre")}
           >
-            <CardContent sx={{ width: "100%" }}>
+            <Box sx={{ width: "100%" }}>
               <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold" }}>
                 Centre Absoluto
               </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <Typography variant="h2" sx={{ fontWeight: "bold" }}>{sportCenters}</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="h2" sx={{ fontWeight: "bold" }}>
+                  {sportCenters}
+                </Typography>
                 <ResponsiveContainer width="55%" height={120}>
                   <LineChart data={mockData}>
                     <XAxis dataKey="name" hide />
@@ -103,13 +145,13 @@ export default function DashboardStats() {
                   </LineChart>
                 </ResponsiveContainer>
               </Box>
-            </CardContent>
-          </Card>
+            </Box>
+          </Box>
         </Grid>
 
         {/* 🔹 Card - Antrenamente săptămâna aceasta (Mock) */}
         <Grid item xs={12} md={10} lg={8}>
-          <Card
+          <Box
             sx={{
               width: "100%",
               height: 220,
@@ -117,15 +159,28 @@ export default function DashboardStats() {
               display: "flex",
               alignItems: "center",
               px: 4,
+              boxShadow: 1,
+              ":hover": { backgroundColor: "#f5f5f5" },
+              cursor: "pointer",
             }}
-            elevation={1}
           >
-            <CardContent sx={{ width: "100%" }}>
+            <Box sx={{ width: "100%" }}>
               <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold" }}>
-                Antrenamente
+                Orar studenti
               </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <Typography variant="h2" sx={{ fontWeight: "bold" }}>{weeklyTrainings}</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  cursor: "pointer",
+                  
+                }}
+                onClick={() => navigate("/admin/orar")}
+              >
+                <Typography variant="h2" sx={{ fontWeight: "bold" }}>
+                  {weeklyTrainings}
+                </Typography>
                 <ResponsiveContainer width="55%" height={120}>
                   <LineChart data={mockData}>
                     <XAxis dataKey="name" hide />
@@ -135,8 +190,8 @@ export default function DashboardStats() {
                   </LineChart>
                 </ResponsiveContainer>
               </Box>
-            </CardContent>
-          </Card>
+            </Box>
+          </Box>
         </Grid>
       </Grid>
     </Box>

@@ -18,6 +18,8 @@ import CentresList from "./components/AdminPannel/raports/Centre/CentresList";
 import CreateCentre from "./components/AdminPannel/raports/Centre/CreateCentre";
 import { ThemeProvider } from "./components/ThemeContext/ThemeContext";
 import DarkModeSwitcher from "./components/ThemeContext/DarkModeSwitcher";
+import CreareOrar from "./components/AdminPannel/raports/Orar/CreareOrar";
+import ListaOrar from "./components/AdminPannel/raports/Orar/ListaOrar";
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(true);
@@ -55,6 +57,7 @@ function App() {
                 <Route path="antrenamente" element={<Antrenamente />} />
                 <Route path="centrelist" element={<CentresList />} />
                 <Route path="createcentre" element={<CreateCentre />} />
+                <Route path="orar" element={<><CreareOrar /><ListaOrar /></>} />
               </Route>
 
               {/* Redirect pentru orice altă rută */}

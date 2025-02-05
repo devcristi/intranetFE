@@ -24,6 +24,8 @@ import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { PageContainer } from "@toolpad/core/PageContainer";
 import Grid from "@mui/material/Grid2";
+import Logo from '../../imgs/logobjj.png';
+
 
 const demoTheme = extendTheme({
   colorSchemes: { light: true, dark: true },
@@ -91,10 +93,10 @@ export default function AdminPannel({ drawerOpen, setDrawerOpen }) {
           onClick: () => navigate("/admin/centre"),
         },
         {
-          segment: "antrenamente",
-          title: "Antrenamente",
+          segment: "orar",
+          title: "Orar",
           icon: <DescriptionIcon />,
-          onClick: () => navigate("/admin/antrenamente"),
+          onClick: () => navigate("/admin/orar"),
         },
       ],
     },
@@ -103,7 +105,14 @@ export default function AdminPannel({ drawerOpen, setDrawerOpen }) {
   const breadcrumbs = buildBreadcrumbs(location.pathname);
 
   return (
-    <AppProvider navigation={NAVIGATION} theme={demoTheme}>
+    <AppProvider 
+      navigation={NAVIGATION} 
+      theme={demoTheme}
+      branding={{
+        logo: <img src={Logo} alt="Logo" />, // Pass the Logo as a React element,
+        title: '',
+      }}
+      >
       <DashboardLayout drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}>
         <PageContainer>
           <Grid container spacing={2}>
